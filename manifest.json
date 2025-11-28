@@ -1,14 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Custom Styles Manager",
-  "version": "1.0.0",
-  "description": "Управление пользовательскими CSS стилями для любых сайтов",
+  "version": "2.0.0",
+  "description": "Manage custom CSS styles and JavaScript for any website",
   "permissions": [
     "storage",
     "activeTab",
     "scripting",
-    "tabs",
-    "contextMenus"
+    "tabs"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -16,13 +15,14 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "128": "icon.png"
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
     }
   },
   "background": {
     "service_worker": "background.js"
   },
-  "devtools_page": "devtools.html",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -31,6 +31,8 @@
     }
   ],
   "icons": {
-    "128": "icon.png"
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
   }
 }
