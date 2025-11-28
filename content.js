@@ -10,23 +10,18 @@
     
     activeStyles.forEach(style => {
       if (style.type === 'javascript' && style.javascript) {
+        // Send message to background to execute JS (bypasses CSP restrictions)
         try {
-          const script = document.createElement('script');
-          script.textContent = `
-            (function() {
-              try {
-                ${style.javascript}
-              } catch (error) {
-                console.error('Error in user script "${style.name}":', error);
-              }
-            })();
-          `;
-          document.documentElement.appendChild(script);
-          console.log(`✓ Script "${style.name}" done`);
-        } catch (error) {
-          console.error(`Eror compiling script "${style.name}":`, error);
+          chrome.runtime.sendMessage({
+            action: 'injectScript',
+            code: style.javascript,
+            name: style.name
+          });
+        } catch (err) {
+          console.error(`Error sending script "${style.name}" to background:`, err);
         }
       } else if (style.css) {
+        // Apply CSS styles locally
         const styleElement = document.createElement('style');
         styleElement.id = `custom-style-${style.id}`;
         styleElement.textContent = style.css;
@@ -35,10 +30,10 @@
     });
     
     if (activeStyles.length > 0) {
-      console.log(`Custom Styles Manager: ${activeStyles.length} working styles applied.`);
+      console.log(`Custom Styles Manager: applied ${activeStyles.length} styles/scripts`);
     }
   } catch (error) {
-    console.error('Error loading user script:', error);
+    console.error('Error loading custom styles:', error);
   }
   
   function matchesDomain(pattern, domain) {
