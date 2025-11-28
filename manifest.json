@@ -1,25 +1,36 @@
 {
   "manifest_version": 3,
-  "name": "StyleInjector",
-  "version": "1.0",
-  "description": "Add custom css to sites.",
+  "name": "Custom Styles Manager",
+  "version": "1.0.0",
+  "description": "Управление пользовательскими CSS стилями для любых сайтов",
   "permissions": [
-    "storage",     
-    "activeTab",   
-    "scripting",   
-    "tabs"         
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs",
+    "contextMenus"
   ],
   "host_permissions": [
-    "<all_urls>" 
+    "<all_urls>"
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "icon.png" 
+    "default_icon": {
+      "128": "icon.png"
+    }
   },
   "background": {
     "service_worker": "background.js"
   },
+  "devtools_page": "devtools.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
   "icons": {
-    "128": "icon.png" 
+    "128": "icon.png"
   }
 }
