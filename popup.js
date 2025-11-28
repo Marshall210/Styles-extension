@@ -1,4 +1,3 @@
-// popup.js
 let styles = [];
 let currentStyle = null;
 let currentDomain = '';
@@ -6,7 +5,7 @@ let currentFilter = 'all';
 let searchQuery = '';
 let visualEditorActive = false;
 
-// Template library
+// Expanded template library
 const TEMPLATES = [
   {
     category: 'themes',
@@ -264,6 +263,369 @@ document.addEventListener('click', (e) => {
 });
 
 console.log('Videos will open in fullscreen');`
+  },
+  {
+    category: 'themes',
+    name: 'High Contrast',
+    description: 'Maximum contrast for accessibility',
+    type: 'css',
+    code: `/* High Contrast */
+* {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+a {
+  color: #ffff00 !important;
+  text-decoration: underline !important;
+}
+
+button, input[type="submit"] {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}`
+  },
+  {
+    category: 'themes',
+    name: 'Minimalist White',
+    description: 'Clean white theme',
+    type: 'css',
+    code: `/* Minimalist White */
+body {
+  background: #ffffff !important;
+  color: #333333 !important;
+  font-family: 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+* {
+  border-color: #e0e0e0 !important;
+}
+
+a {
+  color: #0066cc !important;
+}`
+  },
+  {
+    category: 'fixes',
+    name: 'Disable Animations',
+    description: 'Stop all animations and transitions',
+    type: 'css',
+    code: `/* Disable Animations */
+*, *::before, *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}`
+  },
+  {
+    category: 'fixes',
+    name: 'Force Cursor Pointer',
+    description: 'Make all clickable elements obvious',
+    type: 'css',
+    code: `/* Force Cursor Pointer */
+a, button, [onclick], [role="button"],
+input[type="button"], input[type="submit"],
+select, label {
+  cursor: pointer !important;
+}
+
+a:hover, button:hover {
+  opacity: 0.8 !important;
+}`
+  },
+  {
+    category: 'experiments',
+    name: 'Glassmorphism',
+    description: 'Modern glass effect',
+    type: 'css',
+    code: `/* Glassmorphism */
+div, section, article, aside {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 10px !important;
+}`
+  },
+  {
+    category: 'experiments',
+    name: 'Matrix Effect',
+    description: 'Green matrix-style text',
+    type: 'css',
+    code: `/* Matrix Effect */
+body {
+  background: #000 !important;
+  color: #00ff00 !important;
+  font-family: 'Courier New', monospace !important;
+  text-shadow: 0 0 5px #00ff00 !important;
+}
+
+a {
+  color: #00ff00 !important;
+  text-shadow: 0 0 10px #00ff00 !important;
+}`
+  },
+  {
+    category: 'experiments',
+    name: 'Blur Background',
+    description: 'Blur everything except main content',
+    type: 'css',
+    code: `/* Blur Background */
+body > *:not(main):not(article) {
+  filter: blur(3px) !important;
+}
+
+main, article {
+  filter: none !important;
+  position: relative !important;
+  z-index: 100 !important;
+}`
+  },
+  {
+    category: 'scripts',
+    name: 'Auto-Accept Cookies',
+    description: 'Click cookie consent automatically',
+    type: 'javascript',
+    code: `// Auto-Accept Cookies
+function acceptCookies() {
+  const selectors = [
+    '[data-cookie="accept"]',
+    '[id*="accept"]',
+    '[class*="accept"]',
+    'button[class*="cookie"]',
+    'button[id*="cookie"]',
+    '.cookie-accept',
+    '#cookie-accept',
+    'button:contains("Accept")',
+    'button:contains("Agree")',
+    'button:contains("OK")'
+  ];
+  
+  for (const selector of selectors) {
+    const button = document.querySelector(selector);
+    if (button && button.offsetParent !== null) {
+      button.click();
+      console.log('✓ Cookie consent accepted');
+      return true;
+    }
+  }
+  return false;
+}
+
+// Try immediately
+setTimeout(acceptCookies, 1000);
+
+// Try again after 3 seconds
+setTimeout(acceptCookies, 3000);
+
+// Watch for new dialogs
+const observer = new MutationObserver(acceptCookies);
+observer.observe(document.body, { childList: true, subtree: true });`
+  },
+  {
+    category: 'scripts',
+    name: 'Download All Images',
+    description: 'Download all images from page',
+    type: 'javascript',
+    code: `// Download All Images
+const images = document.querySelectorAll('img');
+let downloaded = 0;
+
+images.forEach((img, index) => {
+  if (img.src && img.src.startsWith('http')) {
+    setTimeout(() => {
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = \`image-\${index + 1}.jpg\`;
+      a.click();
+      downloaded++;
+    }, index * 500);
+  }
+});
+
+setTimeout(() => {
+  alert(\`Downloaded \${downloaded} images!\`);
+}, images.length * 500 + 1000);`
+  },
+  {
+    category: 'scripts',
+    name: 'Page Timer',
+    description: 'Show time spent on page',
+    type: 'javascript',
+    code: `// Page Timer
+const startTime = Date.now();
+
+const timerDiv = document.createElement('div');
+timerDiv.style.cssText = \`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 999999;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+\`;
+
+document.body.appendChild(timerDiv);
+
+function updateTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const hours = Math.floor(elapsed / 3600);
+  const minutes = Math.floor((elapsed % 3600) / 60);
+  const seconds = elapsed % 60;
+  
+  const parts = [];
+  if (hours > 0) parts.push(\`\${hours}h\`);
+  if (minutes > 0) parts.push(\`\${minutes}m\`);
+  parts.push(\`\${seconds}s\`);
+  
+  timerDiv.textContent = '⏱️ ' + parts.join(' ');
+}
+
+setInterval(updateTimer, 1000);
+updateTimer();`
+  },
+  {
+    category: 'scripts',
+    name: 'Reading Progress Bar',
+    description: 'Show scroll progress',
+    type: 'javascript',
+    code: `// Reading Progress Bar
+const progressBar = document.createElement('div');
+progressBar.style.cssText = \`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%);
+  z-index: 999999;
+  transition: width 0.1s ease;
+\`;
+
+document.body.appendChild(progressBar);
+
+function updateProgress() {
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  
+  const scrollPercent = (scrollTop / (documentHeight - windowHeight)) * 100;
+  progressBar.style.width = Math.min(scrollPercent, 100) + '%';
+}
+
+window.addEventListener('scroll', updateProgress);
+updateProgress();`
+  },
+  {
+    category: 'scripts',
+    name: 'Dark Mode Toggle',
+    description: 'Ctrl+D to toggle dark mode',
+    type: 'javascript',
+    code: `// Dark Mode Toggle
+let darkMode = false;
+
+const style = document.createElement('style');
+style.id = 'dark-mode-toggle-style';
+document.head.appendChild(style);
+
+function toggleDarkMode() {
+  darkMode = !darkMode;
+  
+  if (darkMode) {
+    style.textContent = \`
+      html {
+        filter: invert(1) hue-rotate(180deg) !important;
+      }
+      
+      img, video, [style*="background-image"] {
+        filter: invert(1) hue-rotate(180deg) !important;
+      }
+    \`;
+    console.log('🌙 Dark mode ON');
+  } else {
+    style.textContent = '';
+    console.log('☀️ Dark mode OFF');
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'd') {
+    e.preventDefault();
+    toggleDarkMode();
+  }
+});
+
+console.log('Press Ctrl+D to toggle dark mode');`
+  },
+  {
+    category: 'scripts',
+    name: 'Focus Mode',
+    description: 'Dim everything except clicked element',
+    type: 'javascript',
+    code: `// Focus Mode
+let focusMode = false;
+let focusedElement = null;
+
+const overlay = document.createElement('div');
+overlay.style.cssText = \`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 999998;
+  display: none;
+  pointer-events: none;
+\`;
+document.body.appendChild(overlay);
+
+function toggleFocus(e) {
+  if (e.altKey && e.key === 'f') {
+    e.preventDefault();
+    focusMode = !focusMode;
+    
+    if (focusMode) {
+      overlay.style.display = 'block';
+      document.addEventListener('click', handleFocus);
+      console.log('🎯 Focus mode ON - Click element to focus');
+    } else {
+      overlay.style.display = 'none';
+      if (focusedElement) {
+        focusedElement.style.position = '';
+        focusedElement.style.zIndex = '';
+        focusedElement = null;
+      }
+      document.removeEventListener('click', handleFocus);
+      console.log('🎯 Focus mode OFF');
+    }
+  }
+}
+
+function handleFocus(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  
+  if (focusedElement) {
+    focusedElement.style.position = '';
+    focusedElement.style.zIndex = '';
+  }
+  
+  focusedElement = e.target;
+  focusedElement.style.position = 'relative';
+  focusedElement.style.zIndex = '999999';
+}
+
+document.addEventListener('keydown', toggleFocus);
+console.log('Press Alt+F to toggle focus mode');`
   }
 ];
 
@@ -295,7 +657,9 @@ function renderStylesList() {
   
   let filtered = styles.filter(style => {
     // Filter by category
-    if (currentFilter !== 'all' && style.category !== currentFilter) {
+    if (currentFilter === 'favorites') {
+      if (!style.favorite) return false;
+    } else if (currentFilter !== 'all' && style.category !== currentFilter) {
       return false;
     }
     
@@ -308,41 +672,91 @@ function renderStylesList() {
     return true;
   });
   
+  // Sort: favorites first, then by creation date
+  filtered.sort((a, b) => {
+    if (a.favorite && !b.favorite) return -1;
+    if (!a.favorite && b.favorite) return 1;
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
+  
   if (filtered.length === 0) {
     list.innerHTML = '<div class="no-styles-msg">No styles found</div>';
     return;
   }
   
-  filtered.forEach(style => {
-    const categoryBadge = getCategoryBadge(style.category || 'experiments');
-    const typeBadge = style.type === 'javascript' ? '<span class="category-badge category-scripts">JS</span>' : '';
-    
-    const item = document.createElement('div');
-    item.className = 'style-item' + (currentStyle?.id === style.id ? ' active' : '');
-    item.innerHTML = `
-      <div class="style-name">
-        <div class="toggle-switch ${style.enabled ? 'active' : ''}" data-id="${style.id}"></div>
-        <span>${style.name}</span>
-        ${categoryBadge}
-        ${typeBadge}
-      </div>
-      <div class="style-domain">${style.domain || 'All sites'}</div>
-    `;
-    
-    item.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('toggle-switch')) {
-        editStyle(style);
-      }
+  // Group by domain if not filtering
+  if (currentFilter === 'all' && !searchQuery) {
+    const grouped = {};
+    filtered.forEach(style => {
+      const domain = style.domain || 'All sites';
+      if (!grouped[domain]) grouped[domain] = [];
+      grouped[domain].push(style);
     });
     
-    const toggle = item.querySelector('.toggle-switch');
-    toggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleStyle(style.id);
+    Object.keys(grouped).sort().forEach(domain => {
+      const groupHeader = document.createElement('div');
+      groupHeader.style.cssText = 'padding: 8px 12px; background: #2d2d30; font-size: 11px; font-weight: bold; color: #858585; border-bottom: 1px solid #3e3e42;';
+      groupHeader.textContent = `📌 ${domain}`;
+      list.appendChild(groupHeader);
+      
+      grouped[domain].forEach(style => {
+        list.appendChild(createStyleItem(style));
+      });
     });
-    
-    list.appendChild(item);
+  } else {
+    filtered.forEach(style => {
+      list.appendChild(createStyleItem(style));
+    });
+  }
+}
+
+function createStyleItem(style) {
+  const categoryBadge = getCategoryBadge(style.category || 'experiments');
+  const typeBadge = style.type === 'javascript' ? '<span class="category-badge category-scripts">JS</span>' : '';
+  const favStar = style.favorite ? '⭐' : '☆';
+  
+  const item = document.createElement('div');
+  item.className = 'style-item' + (currentStyle?.id === style.id ? ' active' : '');
+  item.innerHTML = `
+    <div class="style-name">
+      <div class="toggle-switch ${style.enabled ? 'active' : ''}" data-id="${style.id}"></div>
+      <span class="fav-star" data-id="${style.id}" style="cursor: pointer; margin-right: 4px; user-select: none;">${favStar}</span>
+      <span>${style.name}</span>
+      ${categoryBadge}
+      ${typeBadge}
+    </div>
+    <div class="style-domain">${style.domain || 'All sites'}</div>
+  `;
+  
+  item.addEventListener('click', (e) => {
+    if (!e.target.classList.contains('toggle-switch') && !e.target.classList.contains('fav-star')) {
+      editStyle(style);
+    }
   });
+  
+  const toggle = item.querySelector('.toggle-switch');
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleStyle(style.id);
+  });
+  
+  const favStarElement = item.querySelector('.fav-star');
+  favStarElement.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleFavorite(style.id);
+  });
+  
+  return item;
+}
+
+// Toggle favorite
+async function toggleFavorite(id) {
+  const style = styles.find(s => s.id === id);
+  if (style) {
+    style.favorite = !style.favorite;
+    await saveStyles();
+    renderStylesList();
+  }
 }
 
 function getCategoryBadge(category) {
@@ -377,6 +791,28 @@ function createNewStyle() {
     css: `/* New style for ${currentDomain} */\n\nbody {\n  \n}`,
     javascript: '',
     enabled: true,
+    favorite: false,
+    createdAt: new Date().toISOString()
+  };
+  
+  styles.push(newStyle);
+  saveStyles();
+  editStyle(newStyle);
+  renderStylesList();
+}
+
+// Create new script
+function createNewScript() {
+  const newStyle = {
+    id: Date.now().toString(),
+    name: 'New Script',
+    domain: currentDomain,
+    type: 'javascript',
+    category: 'scripts',
+    css: '',
+    javascript: `// New script for ${currentDomain}\n\nconsole.log('Script loaded');`,
+    enabled: true,
+    favorite: false,
     createdAt: new Date().toISOString()
   };
   
@@ -530,12 +966,16 @@ async function createAutoBackup() {
   await chrome.storage.local.set({ backups });
 }
 
-// Export all styles
+// Export all styles (one file per domain)
 async function exportAllStyles() {
   if (styles.length === 0) {
     alert('No styles to export');
     return;
   }
+  
+  const confirmExport = confirm(`Export all styles?\nThis will download one file per domain (${new Set(styles.map(s => s.domain || 'all-sites')).size} files total).`);
+  
+  if (!confirmExport) return;
   
   const stylesByDomain = {};
   
@@ -562,7 +1002,7 @@ async function exportAllStyles() {
     URL.revokeObjectURL(url);
     exportCount++;
     
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 200));
   }
   
   showNotification(`Exported ${exportCount} files`);
@@ -703,16 +1143,30 @@ function applyTemplate(template) {
 
 // Visual editor
 function toggleVisualEditor() {
-  visualEditorActive = !visualEditorActive;
   const btn = document.getElementById('visualEditorBtn');
   
-  if (visualEditorActive) {
-    btn.classList.add('active');
-    activateVisualEditor();
-  } else {
-    btn.classList.remove('active');
-    deactivateVisualEditor();
-  }
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (!tabs[0]) return;
+
+    // check if visual editor is already active
+    chrome.scripting.executeScript({
+      target: { tabId: tabs[0].id },
+      func: () => !!window.customStylesVisualEditor
+    }, (results) => {
+      const isAlreadyActive = results && results[0] && results[0].result;
+
+      if (isAlreadyActive) {
+        deactivateVisualEditor();
+        if (btn) btn.classList.remove('active');
+        visualEditorActive = false;
+      } else {
+        activateVisualEditor();
+        if (btn) btn.classList.add('active');
+        visualEditorActive = true;
+        window.close();
+      }
+    });
+  });
 }
 
 function activateVisualEditor() {
@@ -732,8 +1186,9 @@ function activateVisualEditor() {
             pointer-events: none;
             border: 2px solid #7b2cbf;
             background: rgba(123, 44, 191, 0.1);
-            z-index: 999999;
+            z-index: 2147483647; /* Максимальный z-index */
             transition: all 0.1s ease;
+            box-sizing: border-box;
           `;
           document.body.appendChild(highlightDiv);
           
@@ -749,63 +1204,171 @@ function activateVisualEditor() {
             border-radius: 8px;
             font-family: monospace;
             font-size: 12px;
-            z-index: 1000000;
+            z-index: 2147483647;
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            max-width: 300px;
+            max-width: 350px;
+            max-height: 400px;
+            overflow-y: auto;
+            pointer-events: none;
           `;
           document.body.appendChild(infoDiv);
           
-          function updateHighlight(e) {
-            const el = e.target;
-            if (el === highlightDiv || el === infoDiv) return;
+          let selectedElement = null;
+          let selectedCssCode = '';
+          
+          function getSelector(el) {
+            let selector = el.tagName.toLowerCase();
+            if (el.id) {
+              selector += '#' + el.id;
+            } else if (el.className && typeof el.className === 'string') {
+              const classes = el.className.trim().split(/\s+/).filter(c => c);
+              if (classes.length > 0) {
+                selector += '.' + classes.join('.');
+              }
+            }
+            return selector;
+          }
+          
+          function getParentSelector(el) {
+            const parent = el.parentElement;
+            if (!parent || parent === document.body) return '';
+            return getSelector(parent) + ' ' + getSelector(el);
+          }
+          
+          function getCssCode(el) {
+            const styles = window.getComputedStyle(el);
+            const selector = getSelector(el);
+            const parentSelector = getParentSelector(el);
             
+            const properties = [
+              'display', 'position', 'width', 'height', 'background-color',
+              'color', 'font-size', 'font-weight', 'font-family',
+              'padding', 'margin', 'border', 'border-radius',
+              'text-align', 'line-height', 'opacity', 'z-index'
+            ];
+            
+            let css = `${selector} {\n`;
+            properties.forEach(prop => {
+              const value = styles.getPropertyValue(prop);
+              if (value && value !== 'none' && value !== 'auto' && !value.startsWith('0px') && value !== 'normal') {
+                css += `  ${prop}: ${value};\n`;
+              }
+            });
+            css += '}';
+            
+            if (parentSelector && parentSelector !== selector) {
+              css = `/* Parent context: ${parentSelector} */\n\n` + css;
+            }
+            return css;
+          }
+          
+
+          function updateHighlight(e) {
+            if (e.target.id === 'custom-styles-highlight' || e.target.id === 'custom-styles-info') return;
+            
+            const el = e.target;
             const rect = el.getBoundingClientRect();
+            
             highlightDiv.style.top = (rect.top + window.scrollY) + 'px';
             highlightDiv.style.left = (rect.left + window.scrollX) + 'px';
             highlightDiv.style.width = rect.width + 'px';
             highlightDiv.style.height = rect.height + 'px';
             
-            let selector = el.tagName.toLowerCase();
-            if (el.id) selector += '#' + el.id;
-            if (el.className) selector += '.' + el.className.split(' ').join('.');
+            selectedElement = el;
+            selectedCssCode = getCssCode(el);
+            const selector = getSelector(el);
             
-            const styles = window.getComputedStyle(el);
             infoDiv.innerHTML = `
-              <div style="margin-bottom: 8px; font-weight: bold; color: #7b2cbf;">${selector}</div>
-              <div>background: ${styles.backgroundColor}</div>
-              <div>color: ${styles.color}</div>
-              <div>font-size: ${styles.fontSize}</div>
-              <div style="margin-top: 8px; color: #858585;">Click to copy selector</div>
+              <div style="margin-bottom: 8px; font-weight: bold; color: #c77dff;">${selector}</div>
+              <div style="color: #aaa; margin-bottom: 8px;">Click Esc to exit</div>
+              <div style="border-top: 1px solid #444; padding-top: 8px; color: #4da6ff;">
+                Touch to copy CSS
+              </div>
             `;
-            
-            window.customStylesSelectedSelector = selector;
           }
           
           function handleClick(e) {
-            if (e.target === infoDiv) return;
             e.preventDefault();
             e.stopPropagation();
             
-            if (window.customStylesSelectedSelector) {
-              navigator.clipboard.writeText(window.customStylesSelectedSelector);
-              alert('Selector copied: ' + window.customStylesSelectedSelector);
+            if (selectedCssCode) {
+              navigator.clipboard.writeText(selectedCssCode);
+              
+              const notification = document.createElement('div');
+              notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #2d7d2d;
+                color: white;
+                padding: 15px 30px;
+                border-radius: 8px;
+                font-size: 16px;
+                z-index: 2147483647;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+              `;
+              notification.textContent = '✓ CSS copied!';
+              document.body.appendChild(notification);
+              setTimeout(() => notification.remove(), 1500);
+            }
+          }
+
+          function handleKeyDown(e) {
+            if (e.key === 'Escape') {
+              window.customStylesCleanup();
             }
           }
           
+          // Add event listeners
           document.addEventListener('mousemove', updateHighlight);
           document.addEventListener('click', handleClick, true);
+          document.addEventListener('keydown', handleKeyDown); 
           
+          // Greeting message
+          const welcomeMsg = document.createElement('div');
+          welcomeMsg.style.cssText = `
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #7b2cbf;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 16px;
+            z-index: 2147483647;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+            text-align: center;
+            transition: opacity 0.5s;
+          `;
+          welcomeMsg.innerHTML = `
+            <div style="font-weight: bold; margin-bottom: 5px;">Visual Editor</div>
+            <div style="font-size: 13px;">Hover and click to select</div>
+            <div style="font-size: 11px; margin-top: 5px; opacity: 0.8;">ESC - закрыть</div>
+          `;
+          document.body.appendChild(welcomeMsg);
+          setTimeout(() => {
+            welcomeMsg.style.opacity = '0';
+            setTimeout(() => welcomeMsg.remove(), 500);
+          }, 3000);
+          
+          // Cleanup function
           window.customStylesCleanup = () => {
             document.removeEventListener('mousemove', updateHighlight);
             document.removeEventListener('click', handleClick, true);
+            document.removeEventListener('keydown', handleKeyDown);
+            
             if (highlightDiv) highlightDiv.remove();
             if (infoDiv) infoDiv.remove();
+            if (welcomeMsg) welcomeMsg.remove();
+            
             window.customStylesVisualEditor = false;
+            // delete whole cleanup function to avoid multiple calls
+            delete window.customStylesCleanup;
           };
         }
       });
-      
-      showNotification('Visual editor activated! Hover over elements');
     }
   });
 }
@@ -846,6 +1409,7 @@ function showNotification(message) {
 
 // Event listeners
 document.getElementById('newStyleBtn').addEventListener('click', createNewStyle);
+document.getElementById('newScriptBtn').addEventListener('click', createNewScript);
 document.getElementById('templatesBtn').addEventListener('click', openTemplatesModal);
 document.getElementById('closeTemplates').addEventListener('click', closeTemplatesModal);
 document.getElementById('visualEditorBtn').addEventListener('click', toggleVisualEditor);

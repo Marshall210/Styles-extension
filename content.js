@@ -1,4 +1,3 @@
-// content.js
 (async function() {
   try {
     const domain = window.location.hostname;
@@ -11,7 +10,6 @@
     
     activeStyles.forEach(style => {
       if (style.type === 'javascript' && style.javascript) {
-        // Выполняем JavaScript код
         try {
           const script = document.createElement('script');
           script.textContent = `
@@ -19,17 +17,16 @@
               try {
                 ${style.javascript}
               } catch (error) {
-                console.error('Ошибка в пользовательском скрипте "${style.name}":', error);
+                console.error('Error in user script "${style.name}":', error);
               }
             })();
           `;
           document.documentElement.appendChild(script);
-          console.log(`✓ Скрипт "${style.name}" выполнен`);
+          console.log(`✓ Script "${style.name}" done`);
         } catch (error) {
-          console.error(`Ошибка при выполнении скрипта "${style.name}":`, error);
+          console.error(`Eror compiling script "${style.name}":`, error);
         }
       } else if (style.css) {
-        // Применяем CSS стили
         const styleElement = document.createElement('style');
         styleElement.id = `custom-style-${style.id}`;
         styleElement.textContent = style.css;
@@ -38,17 +35,17 @@
     });
     
     if (activeStyles.length > 0) {
-      console.log(`Custom Styles Manager: применено ${activeStyles.length} стилей/скриптов`);
+      console.log(`Custom Styles Manager: ${activeStyles.length} working styles applied.`);
     }
   } catch (error) {
-    console.error('Ошибка загрузки пользовательских стилей:', error);
+    console.error('Error loading user script:', error);
   }
   
   function matchesDomain(pattern, domain) {
     if (pattern === '*' || pattern === '') return true;
     
     const regex = new RegExp(
-      '^' + pattern.replace(/\./g, '\\.').replace(/\*/g, '.*') + '
+      '^' + pattern.replace(/\./g, '\\.').replace(/\*/g, '.*') + '$'
     );
     return regex.test(domain);
   }
