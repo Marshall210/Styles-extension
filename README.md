@@ -1,6 +1,6 @@
 # Custom Styles Manager v0.3.3
 
-> A professional browser extension for managing and injecting custom CSS and JavaScript styles on any website. Supports Chrome, Edge, and Brave browsers.
+> Browser extension for managing and injecting custom CSS and JavaScript styles on any website. Supports Chrome, Edge, and Brave browsers.
 
 ## Table of Contents
 
